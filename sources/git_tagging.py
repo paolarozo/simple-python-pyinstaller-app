@@ -14,12 +14,12 @@ class RepositoryTagWrapper:
         # github authentication through an access token
         github_obj = Github(self.token)
         # fetching the repository
-        repository = github_obj.get_repo('repo/{}'.format(self.repo_name))
-        # creating the tag
-        new_tag = repository.create_git_tag('v.0.0.1', 'First tag', 'e4fc97dbb78a0c2d726b16ff29dc2a914db87fc7',
+        repository = github_obj.get_repo('{}/{}'.format(self.username, self.repo_name))
+        # # creating the tag
+        new_tag = repository.create_git_tag('v.0.0.1', 'First tag', 'a6316ac76bf7725ea4a9c6f10940b3183ad12a60',
                                             'commit')
-        # creating reference to the tag
-        reference = repository.create_git_ref('refs/tags/v.0.1', new_tag.sha)
+        # # creating reference to the tag
+        reference = repository.create_git_ref('refs/tags/v.0.0.1', new_tag.sha)
 
     def _find_next_tag(self):
         pass
