@@ -8,6 +8,7 @@ class RepositoryTagWrapper:
         self.username = username
         self.token = token
         self.repo_name = repo_name
+        print('parameter user:{} token:{} repo:{}'.format(self.username, self.token, self.repo_name))
 
     def tag_repository(self):
         # github authentication through an access token
@@ -25,5 +26,6 @@ class RepositoryTagWrapper:
 
 
 if __name__ == "__main__":
-    repository_wrapper = RepositoryTagWrapper(sys.argv[0], sys.argv[1], sys.argv[2])
+    parameters = sys.argv[1:]
+    repository_wrapper = RepositoryTagWrapper(parameters[0], parameters[1], parameters[2])
     repository_wrapper.tag_repository()
