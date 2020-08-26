@@ -20,6 +20,9 @@ class RepositoryTagWrapper:
         # creating reference to the tag
         reference = repository.create_git_ref('refs/tags/v.0.1', new_tag.sha)
 
+    def _find_next_tag(self):
+        pass
+
 
 if __name__ == "__main__":
     repository_wrapper = RepositoryTagWrapper(sys.argv[0], sys.argv[1], sys.argv[2])
