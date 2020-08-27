@@ -45,8 +45,8 @@ pipeline {
         stage("Tag and Push") {
             agent { dockerfile true }
             steps {
-                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'git-credentials-id', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) {
-                    sh("python sources/git_tagging.py ${env.GIT_USERNAME} ${env.GIT_PASSWORD} simple-python-pyinstaller-app")
+                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'git-credentials-id', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_TOKEN']]) {
+                    sh("python sources/git_tagging.py ${env.GIT_USERNAME} ${env.GIT_TOKEN} simple-python-pyinstaller-app")
 //                     sh("git push https://${env.GIT_USERNAME}:${env.GIT_PASSWORD}@github.com/paolarozo/simple-python-pyinstaller-app.git --tags")
                 }
             }
