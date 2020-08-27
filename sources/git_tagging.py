@@ -24,7 +24,7 @@ class RepositoryTagger:
             new_tag = self.repository.create_git_tag(
                 tag=next_tag_name,
                 message=next_tag_name,
-                object=latest_commit.sha,
+                object=latest_commit[0].sha,
                 type='commit'
             )
             # creating reference to the tag
