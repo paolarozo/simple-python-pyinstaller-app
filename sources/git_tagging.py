@@ -1,6 +1,7 @@
 import sys
 
 from github import Github, Tag
+from github.PaginatedList import PaginatedList
 
 
 class RepositoryTagger:
@@ -34,7 +35,7 @@ class RepositoryTagger:
             tag = self._get_latest_tag()
         latest_release = self._get_latest_release()
         if latest_release:
-            next_release_description = self._add_tag_note(tag.commit.commit, self._check_commit_from_tag(latest_release.tag_name))
+            next_release_description = self._add_tag_note(base_commit=tag.commit.commit, head_commit=self._check_commit_from_tag(latest_release.tag_name))
         else:
             next_release_description = tag.commit.comments_url
         release = self.repository.create_git_release(tag.name, tag.name, next_release_description, draft=False, prerelease=False)
@@ -49,14 +50,12 @@ class RepositoryTagger:
 
     def _get_latest_release(self):
         all_releases = self.repository.get_releases()
-        print(all_releases)
         if all_releases:
-            if isinstance(all_releases, list):
+            if isinstance(all_releases, PaginatedList):
                 ordered_releases = sorted(all_releases, key=lambda x: x.created_at, reverse=True)
-                print(ordered_releases)
                 return ordered_releases[0]
             else:
-                all_releases
+                return all_releases
         return None
 
     def _get_latest_commits(self):
@@ -89,13 +88,16 @@ class RepositoryTagger:
         tag_name[3] = str(int(tag_name[3]) +1)
         return '.'.join(tag_name)
 
-    def _add_tag_note(self, commit1, commit2):
-        comparison = self.repository.compare(base=commit1.sha, head=commit2.sha)
-        print(comparison.diff_url)
-        return comparison.diff_url
+    def _add_tag_note(self, base_commit, head_commit):
+        comparison = self.repository.compare(base=base_commit.sha, head=head_commit.sha)
+        result = comparison.diff_url + '/n'
+        for file in comparison.files:
+            result += str(file.raw_data + '/n')
+        return result
 
 
 if __name__ == "__main__":
     parameters = sys.argv[1:]
     repository_wrapper = RepositoryTagger(parameters[0], parameters[1], parameters[2])
     repository_wrapper.tag_latest_commit()
+    repository_wrapper.create_release()
