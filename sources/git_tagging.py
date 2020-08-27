@@ -35,7 +35,8 @@ class RepositoryTagger:
         tag = self._get_latest_tag()
         if tag:
             latest_release = self._get_latest_release()
-            if latest_release and not self._check_tag_has_release(tag) and 'release' in str(tag.commit.commit.message):
+            if latest_release and not self._check_tag_has_release(tag) and \
+                    'release' in str(tag.commit.commit.message).lower():
                 next_release_description = self._create_release_notes(
                     head_commit=tag.commit.commit,
                     base_commit=self._get_commit_from_tagname(latest_release.tag_name)
