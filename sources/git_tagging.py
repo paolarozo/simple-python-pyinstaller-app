@@ -139,6 +139,6 @@ class RepositoryTagger:
 
 if __name__ == "__main__":
     parameters = sys.argv[1:]
-    repository_wrapper = RepositoryTagger(parameters[0], parameters[1], parameters[2])
+    repository_wrapper = RepositoryTagger(parameters[0], parameters[1])
     repository_wrapper.tag_latest_commit()
     repository_wrapper.create_release()
