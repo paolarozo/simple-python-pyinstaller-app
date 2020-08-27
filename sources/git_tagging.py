@@ -30,6 +30,24 @@ class RepositoryTagger:
             # creating reference to the tag
             reference = self.repository.create_git_ref('refs/tags/{}'.format(next_tag_name), new_tag.sha)
 
+    def create_semantic_release(self):
+        """Function that creates a release for the latest tag contains the word -release-"""
+        tag = self._get_latest_tag()
+        if tag:
+            latest_release = self._get_latest_release()
+            if latest_release and not self._check_tag_has_release(tag) and 'release' in str(tag.name):
+                next_release_description = self._create_release_notes(
+                    head_commit=tag.commit.commit,
+                    base_commit=self._get_commit_from_tagname(latest_release.tag_name)
+                )
+                release = self.repository.create_git_release(
+                    tag=tag.name,
+                    name=tag.name,
+                    message=next_release_description,
+                    draft=False,
+                    prerelease=False
+                )
+
     def create_release(self, tag: Tag = None):
         """Function that creates a release for the latest tag found or the one provided"""
         if not tag:
@@ -96,7 +114,7 @@ class RepositoryTagger:
         if not isinstance(all_releases, PaginatedList):
             all_releases = [all_releases]
         for release in all_releases:
-            if release.tag_name == Tag.name:
+            if release.tag_name == tag.name:
                 return True
         return None
 
