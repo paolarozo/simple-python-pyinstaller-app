@@ -94,11 +94,11 @@ class RepositoryTagger:
         result += '# Changes \n # Files \n'
         for file in comparison.files:
             result += '## '+str(file.raw_data['filename']) + '\n'
-            result += '- status' + str(file.raw_data['status']) + '\n'
-            result += '- additions' + str(file.raw_data['additions']) + '\n'
-            result += '- deletions' + str(file.raw_data['deletions']) + '\n'
-            result += '- changes' + str(file.raw_data['changes']) + '\n'
-            result += '- blob_url' + str(file.raw_data['blob_url']) + '\n'
+            result += '- status = ' + str(file.raw_data['status']) + '\n'
+            result += '- additions = ' + str(file.raw_data['additions']) + ' lines \n'
+            result += '- deletions = ' + str(file.raw_data['deletions']) + ' lines \n'
+            result += '- changes = ' + str(file.raw_data['changes']) + ' lines \n'
+            result += '- blob_url = ' + str(file.raw_data['blob_url']) + '\n'
         return result
 
 
