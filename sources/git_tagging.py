@@ -90,21 +90,20 @@ class RepositoryTagger:
 
     def _add_tag_note(self, base_commit, head_commit):
         comparison = self.repository.compare(base=base_commit.sha, head=head_commit.sha)
-        result = 'Diff url = ' + comparison.diff_url + '\n \n'
-        result += 'Changes:'
+        result = '# Diff url \n' + comparison.diff_url + '\n'
+        result += '# Changes \n # Files \n'
         for file in comparison.files:
-            result += 'Filename = '+str(file.raw_data['filename']) + '\n'
-            result += '     status' + str(file.raw_data['status']) + '\n'
-            result += '     additions' + str(file.raw_data['additions']) + '\n'
-            result += '     deletions' + str(file.raw_data['deletions']) + '\n'
-            result += '     changes' + str(file.raw_data['changes']) + '\n'
-            result += '     blob_url' + str(file.raw_data['blob_url']) + '\n'
-            result += '     patch' + str(file.raw_data['patch']) + '\n \n'
+            result += '## '+str(file.raw_data['filename']) + '\n'
+            result += '- status' + str(file.raw_data['status']) + '\n'
+            result += '- additions' + str(file.raw_data['additions']) + '\n'
+            result += '- deletions' + str(file.raw_data['deletions']) + '\n'
+            result += '- changes' + str(file.raw_data['changes']) + '\n'
+            result += '- blob_url' + str(file.raw_data['blob_url']) + '\n'
         return result
 
 
 if __name__ == "__main__":
     parameters = sys.argv[1:]
     repository_wrapper = RepositoryTagger(parameters[0], parameters[1], parameters[2])
-    #repository_wrapper.tag_latest_commit()
+    repository_wrapper.tag_latest_commit()
     repository_wrapper.create_release()
