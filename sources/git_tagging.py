@@ -35,7 +35,7 @@ class RepositoryTagger:
             tag = self._get_latest_tag()
         latest_release = self._get_latest_release()
         if latest_release:
-            next_release_description = self._add_tag_note(base_commit=tag.commit.commit, head_commit=self._check_commit_from_tag(latest_release.tag_name))
+            next_release_description = self._add_tag_note(head_commit=tag.commit.commit, base_commit=self._check_commit_from_tag(latest_release.tag_name))
         else:
             next_release_description = tag.commit.comments_url
         release = self.repository.create_git_release(tag.name, tag.name, next_release_description, draft=False, prerelease=False)
@@ -90,9 +90,9 @@ class RepositoryTagger:
 
     def _add_tag_note(self, base_commit, head_commit):
         comparison = self.repository.compare(base=base_commit.sha, head=head_commit.sha)
-        result = comparison.diff_url + '/n'
+        result = comparison.diff_url + '\n'
         for file in comparison.files:
-            result += str(file.raw_data + '/n')
+            result += str(file.raw_data + '\n')
         return result
 
 
